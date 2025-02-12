@@ -1,0 +1,6 @@
+@TestBookDDDApp_HostAddress = http://localhost:5127
+
+GET {{TestBookDDDApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TestBookDDDAPP.Infrastructure": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
