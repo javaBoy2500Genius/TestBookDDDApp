@@ -18,7 +18,9 @@ public sealed class Book : Entity<BookId>
         Description=description;
         Price = price;
     }
-  
+
+
+
     public Author Author { get; private set; }
 
     public Name Name { get; private set; }

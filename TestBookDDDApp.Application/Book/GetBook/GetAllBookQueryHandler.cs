@@ -22,7 +22,7 @@ public class GetAllBookQueryHandler :IQueryHandler<GetAllBookQuery, List<TestBoo
             var books = await _repository.GetAllAsync(new GetAllBookPredicate());
             return Result.Create(books);
         }
-        catch(Exception ex)
+        catch(System.Exception ex)
         {
 
             return Result.Failure<List<TestBookDDDAPP.Domain.Book.Book>>(new Error(StatusCodes.Status400BadRequest.ToString(), ex.Message));

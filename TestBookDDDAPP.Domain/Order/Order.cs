@@ -1,6 +1,7 @@
 ﻿using TestBookDDDAPP.Domain.Abstractions;
 using TestBookDDDAPP.Domain.Customers;
 using TestBookDDDAPP.Domain.Order.Enum;
+using TestBookDDDAPP.Domain.Order.Events;
 using TestBookDDDAPP.Domain.Payments;
 using TestBookDDDAPP.Domain.Payments.Enum;
 using TestBookDDDAPP.Domain.Primitive;
@@ -13,10 +14,18 @@ public class Order : Entity<OrderId>
     {
         
     }
-    public Order(OrderId id, Customer customer) : base(id)
+    private Order(OrderId id, Customer customer) : base(id)
     {
         Customer = customer;
         Status = OrderStatus.Pending;
+
+    }
+
+    public static Order CreateOrder(OrderId id, Customer customer)
+    {
+        var order= new Order(id, customer);
+        order.RaiseDomainEvent(new OrderCreatedEvent(id));
+        return order;
     }
 
     public Customer Customer { get; private set; }
@@ -45,6 +54,7 @@ public class Order : Entity<OrderId>
     public void CanceledOrder()
     {
         Status= OrderStatus.Canceled;
+        RaiseDomainEvent(new OrderCanceledEvent(Id));
     }
 
     public void CompletePayment(Payment payment)
