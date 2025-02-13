@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TestBookDDDApp.Abstraction.Validators;
 using TestBookDDDApp.Book.CreateBook;
 using TestBookDDDApp.Book.CreateBook.DTO;
 using TestBookDDDApp.Book.GetBook;
+using TestBookDDDAPP.Domain.Abstractions;
 using TestBookDDDAPP.Domain.Book;
 
 namespace TestBookDDDApp.Controllers;
@@ -55,6 +57,23 @@ public class BookController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateBook(BookCreateDto dto)
     {
+        var validator = new BookValidator();
+
+        var valid = await validator.ValidateAsync(dto);
+
+        if (!valid.IsValid)
+        {
+            var errors = new List<Error>();
+            foreach (var error in valid.Errors)
+            {
+                errors.Add(new Error("400", error.ErrorMessage));
+            }
+
+            var @return = Result.Failure(errors).Select(r => r.Error);
+            return BadRequest(@return);
+
+        }
+
         var command = new CreateBookCommand(dto);
 
         var result = await _sender.Send(command);

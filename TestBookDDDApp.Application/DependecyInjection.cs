@@ -15,6 +15,8 @@ public static class DependencyInjection
         });
 
         services.RegistryAddBehaviors();
+
+
         return services;
     }
 

@@ -22,7 +22,6 @@ public sealed class CreateBookCommandHandler :ICommandHandler<CreateBookCommand,
             var book = new TestBookDDDAPP.Domain.Book.Book(new BookId(Guid.NewGuid()), dto.author, dto.name,
                 dto.description, dto.price);
 
-            return Result.Create(book);
 
             await _repository.AddAsync(book,cancellationToken);
 
